@@ -7,7 +7,7 @@
 // ============================================================================
 // 1. API Configuration & Constants
 // ============================================================================
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://customer-churn-api-dnkq.onrender.com";
 const PREDICT_URL = `${API_BASE}/predict`;
 const HEALTH_URL = `${API_BASE}/health`;
 
@@ -513,8 +513,8 @@ async function handlePredictClick() {
   } catch (err) {
     console.error("Prediction Error:", err);
     showError(
-      "Unable to connect to the prediction server. Please make sure the FastAPI backend is running at http://127.0.0.1:8000.",
-      "Unable to connect to the prediction server.",
+      "Unable to connect to the prediction server. If the backend is waking up from Render's free-tier sleep mode, it may take 30–50 seconds to boot. Please wait a moment and try again.",
+      "Connection to Render Backend Failed",
       true
     );
   } finally {
@@ -586,6 +586,8 @@ function highlightMissingFields(missing) {
   );
 }
 
+let renderWakeupTimer = null;
+
 function setLoadingState(isLoading) {
   if (isLoading) {
     predictBtn.disabled = true;
@@ -594,7 +596,14 @@ function setLoadingState(isLoading) {
     btnText.childNodes.forEach((node) => {
       if (node.nodeType === Node.TEXT_NODE) node.textContent = " Analyzing customer data...";
     });
+    // If Render takes > 3.5s (free tier spinning up from sleep), notify user
+    renderWakeupTimer = setTimeout(() => {
+      btnText.childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) node.textContent = " Waking up Render cloud backend...";
+      });
+    }, 3500);
   } else {
+    clearTimeout(renderWakeupTimer);
     predictBtn.disabled = false;
     predictBtn.classList.remove("is-loading");
     btnSpinner.style.display = "none";

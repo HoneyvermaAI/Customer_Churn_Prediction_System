@@ -110,6 +110,9 @@ The underlying predictive engine is a serialized **Scikit-Learn Pipeline** (`cus
 
 ## 📡 API Reference
 
+**Live Backend URL**: `https://customer-churn-api-dnkq.onrender.com`  
+**Interactive Swagger Docs**: [`https://customer-churn-api-dnkq.onrender.com/docs`](https://customer-churn-api-dnkq.onrender.com/docs)
+
 ### 1. Root Status
 - **URL**: `GET /`
 - **Response**:
