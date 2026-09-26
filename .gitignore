@@ -1,0 +1,100 @@
+# ==============================================================================
+# Python Bytecode & Cache
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==============================================================================
+# Virtual Environments (Local packages, binaries & virtualenvs)
+# ==============================================================================
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+bin/
+include/
+lib/
+lib64/
+
+# ==============================================================================
+# Jupyter Notebook Checkpoints & Temporary Runs
+# ==============================================================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ==============================================================================
+# Environment Variables & Secrets (Never commit credentials)
+# ==============================================================================
+.env
+.env.*
+!.env.example
+secrets.json
+*.pem
+*.key
+
+# ==============================================================================
+# Operating System Artifacts
+# ==============================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.directory
+.fuse_hidden*
+
+# ==============================================================================
+# IDEs & Code Editor Configurations
+# ==============================================================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# ==============================================================================
+# Logs & Runtime Diagnostics
+# ==============================================================================
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# ==============================================================================
+# Packaging, Builds & Testing Artifacts
+# ==============================================================================
+dist/
+build/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ==============================================================================
+# Temporary, Scratch & Local AI Workspace Dumps
+# ==============================================================================
+tmp/
+temp/
+scratch/
+.gemini/
+.antigravity/

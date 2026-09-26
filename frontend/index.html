@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Churn Predictor — AI Retention Intelligence</title>
+  
+  <!-- Modern Tech Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+  <div class="bg-grid-overlay" aria-hidden="true"></div>
+
+  <!-- Navigation / Top Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">ChurnIQ</span>
+          <span class="brand-tag">AI RETENTION</span>
+        </div>
+      </div>
+
+      <!-- Status Indicator -->
+      <div class="status-indicator" id="modelStatusIndicator">
+        <span class="status-pulse-dot" id="modelStatusDot"></span>
+        <span class="status-text" id="modelStatusText">MODEL ONLINE</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge-cluster">
+            <span class="tech-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              XGBoost
+            </span>
+            <span class="tech-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              FastAPI
+            </span>
+            <span class="tech-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              Machine Learning
+            </span>
+          </div>
+
+          <h1 class="hero-title">Customer Churn Predictor</h1>
+          <p class="hero-subtitle">Predict customer churn risk using Machine Learning</p>
+
+          <p class="hero-description">
+            Evaluate high-dimensional subscriber telemetry in real time. Choose customer attributes
+            across profile, account, services, and billing to assess churn probability with calibrated XGBoost inference.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#formSection" class="btn btn-primary hero-btn">
+              Configure Customer Signals
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </a>
+            <div class="preset-pill-group">
+              <span class="preset-label">Quick Scenarios:</span>
+              <button type="button" class="preset-btn" id="presetHighRiskBtn">Load High Risk Sample</button>
+              <button type="button" class="preset-btn" id="presetLowRiskBtn">Load Low Risk Sample</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI / Data Visual Element (Pure CSS) -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="ai-core-container">
+            <div class="ai-core-halo"></div>
+            <div class="ai-radar-ring ai-radar-outer"></div>
+            <div class="ai-radar-ring ai-radar-middle"></div>
+            <div class="ai-radar-ring ai-radar-inner"></div>
+            <div class="ai-sweep-line"></div>
+            
+            <!-- Floating telemetry chips -->
+            <div class="telemetry-node node-1">
+              <span class="node-dot"></span>
+              <span class="node-label">INFERENCE: REAL-TIME</span>
+            </div>
+            <div class="telemetry-node node-2">
+              <span class="node-dot"></span>
+              <span class="node-label">INPUT SIGNALS: 19</span>
+            </div>
+            <div class="telemetry-node node-3">
+              <span class="node-dot"></span>
+              <span class="node-label">MODEL: XGBOOST</span>
+            </div>
+
+            <!-- Central Hub -->
+            <div class="ai-central-hub">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+              <span>AI CORE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STICKY PROGRESS INDICATOR -->
+    <nav class="progress-bar-nav" id="progressBarNav" aria-label="Prediction Progress">
+      <div class="progress-steps-wrapper">
+        <a href="#section-profile" class="step-item active" data-target="section-profile">
+          <span class="step-num">01</span>
+          <span class="step-name">PROFILE</span>
+        </a>
+        <div class="step-connector"></div>
+        <a href="#section-account" class="step-item" data-target="section-account">
+          <span class="step-num">02</span>
+          <span class="step-name">ACCOUNT</span>
+        </a>
+        <div class="step-connector"></div>
+        <a href="#section-services" class="step-item" data-target="section-services">
+          <span class="step-num">03</span>
+          <span class="step-name">SERVICES</span>
+        </a>
+        <div class="step-connector"></div>
+        <a href="#section-billing" class="step-item" data-target="section-billing">
+          <span class="step-num">04</span>
+          <span class="step-name">BILLING</span>
+        </a>
+        <div class="step-connector"></div>
+        <a href="#resultSection" class="step-item" data-target="resultSection" id="stepResult">
+          <span class="step-num">05</span>
+          <span class="step-name">RESULT</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- MAIN FORM WRAPPER -->
+    <section class="form-container-section" id="formSection">
+      <form id="churnPredictionForm" novalidate>
+
+        <!-- ========================================== -->
+        <!-- SECTION 01 — CUSTOMER PROFILE              -->
+        <!-- ========================================== -->
+        <div class="form-card" id="section-profile">
+          <div class="card-header">
+            <div class="section-indicator">01</div>
+            <div>
+              <h2 class="card-title">01 — Customer Profile</h2>
+              <p class="card-subtitle">Basic information about the customer.</p>
+            </div>
+          </div>
+
+          <div class="fields-grid">
+            <!-- Gender -->
+            <div class="field-item" data-field="gender">
+              <label class="field-label">Gender</label>
+              <div class="btn-group btn-group-2" data-field="gender">
+                <button type="button" class="select-btn" data-value="Male">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="10" cy="14" r="5"></circle>
+                    <line x1="19" y1="5" x2="13.6" y2="10.4"></line>
+                    <polyline points="15 5 19 5 19 9"></polyline>
+                  </svg>
+                  Male
+                </button>
+                <button type="button" class="select-btn" data-value="Female">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="9" r="5"></circle>
+                    <line x1="12" y1="14" x2="12" y2="21"></line>
+                    <line x1="9" y1="18" x2="15" y2="18"></line>
+                  </svg>
+                  Female
+                </button>
+              </div>
+            </div>
+
+            <!-- SeniorCitizen (YES / NO -> 1 or 0) -->
+            <div class="field-item" data-field="SeniorCitizen">
+              <label class="field-label">SeniorCitizen</label>
+              <div class="btn-group btn-group-yn" data-field="SeniorCitizen" data-type="numeric-binary">
+                <button type="button" class="yn-btn" data-value="1">YES</button>
+                <button type="button" class="yn-btn" data-value="0">NO</button>
+              </div>
+            </div>
+
+            <!-- Partner (YES / NO) -->
+            <div class="field-item" data-field="Partner">
+              <label class="field-label">Partner</label>
+              <div class="btn-group btn-group-yn" data-field="Partner">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- Dependents (YES / NO) -->
+            <div class="field-item" data-field="Dependents">
+              <label class="field-label">Dependents</label>
+              <div class="btn-group btn-group-yn" data-field="Dependents">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 02 — ACCOUNT INFORMATION           -->
+        <!-- ========================================== -->
+        <div class="form-card" id="section-account">
+          <div class="card-header">
+            <div class="section-indicator">02</div>
+            <div>
+              <h2 class="card-title">02 — Account Information</h2>
+              <p class="card-subtitle">Customer account and subscription information.</p>
+            </div>
+          </div>
+
+          <div class="fields-grid">
+            <!-- Tenure -->
+            <div class="field-item field-item-wide" data-field="tenure">
+              <div class="label-with-value">
+                <label class="field-label" for="tenureInput">tenure (Months with provider)</label>
+                <span class="value-badge" id="tenureDisplayBadge">Select tenure</span>
+              </div>
+              <div class="input-stepper-wrapper">
+                <input 
+                  type="number" 
+                  id="tenureInput" 
+                  class="modern-input" 
+                  min="0" 
+                  max="120" 
+                  placeholder="e.g. 12" 
+                  required
+                />
+                <div class="stepper-presets">
+                  <button type="button" class="chip-btn" data-set-tenure="1">New (1m)</button>
+                  <button type="button" class="chip-btn" data-set-tenure="12">1 Year</button>
+                  <button type="button" class="chip-btn" data-set-tenure="24">2 Years</button>
+                  <button type="button" class="chip-btn" data-set-tenure="48">4 Years</button>
+                  <button type="button" class="chip-btn" data-set-tenure="72">Max (72m)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contract -->
+            <div class="field-item field-item-wide" data-field="Contract">
+              <label class="field-label">Contract</label>
+              <div class="btn-group btn-group-3" data-field="Contract">
+                <button type="button" class="select-btn" data-value="Month-to-month">
+                  <span class="btn-primary-text">Month-to-month</span>
+                  <span class="btn-sub-text">Standard flexibility</span>
+                </button>
+                <button type="button" class="select-btn" data-value="One year">
+                  <span class="btn-primary-text">One year</span>
+                  <span class="btn-sub-text">12-month commitment</span>
+                </button>
+                <button type="button" class="select-btn" data-value="Two year">
+                  <span class="btn-primary-text">Two year</span>
+                  <span class="btn-sub-text">24-month loyalty</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- MonthlyCharges -->
+            <div class="field-item" data-field="MonthlyCharges">
+              <label class="field-label" for="monthlyChargesInput">MonthlyCharges ($)</label>
+              <div class="currency-input-container">
+                <span class="currency-symbol">$</span>
+                <input 
+                  type="number" 
+                  id="monthlyChargesInput" 
+                  class="modern-input currency-input" 
+                  step="0.05" 
+                  min="0" 
+                  placeholder="e.g. 65.50" 
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- TotalCharges -->
+            <div class="field-item" data-field="TotalCharges">
+              <div class="label-with-value">
+                <label class="field-label" for="totalChargesInput">TotalCharges ($)</label>
+                <button type="button" class="link-btn" id="calcTotalBtn" title="Auto-calculate: tenure × MonthlyCharges">
+                  Sync estimate
+                </button>
+              </div>
+              <div class="currency-input-container">
+                <span class="currency-symbol">$</span>
+                <input 
+                  type="number" 
+                  id="totalChargesInput" 
+                  class="modern-input currency-input" 
+                  step="0.05" 
+                  min="0" 
+                  placeholder="e.g. 786.00" 
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 03 — SERVICES                      -->
+        <!-- ========================================== -->
+        <div class="form-card" id="section-services">
+          <div class="card-header">
+            <div class="section-indicator">03</div>
+            <div>
+              <h2 class="card-title">03 — Services</h2>
+              <p class="card-subtitle">Services currently used by the customer.</p>
+            </div>
+          </div>
+
+          <div class="fields-grid">
+            <!-- PhoneService -->
+            <div class="field-item" data-field="PhoneService">
+              <label class="field-label">PhoneService</label>
+              <div class="btn-group btn-group-yn" data-field="PhoneService">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- MultipleLines -->
+            <div class="field-item" data-field="MultipleLines">
+              <label class="field-label">MultipleLines</label>
+              <div class="btn-group btn-group-yn" data-field="MultipleLines">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- InternetService -->
+            <div class="field-item field-item-wide" data-field="InternetService">
+              <label class="field-label">InternetService</label>
+              <div class="btn-group btn-group-3" data-field="InternetService">
+                <button type="button" class="select-btn" data-value="DSL">
+                  <span class="btn-primary-text">DSL</span>
+                  <span class="btn-sub-text">Copper broadband</span>
+                </button>
+                <button type="button" class="select-btn" data-value="Fiber optic">
+                  <span class="btn-primary-text">Fiber optic</span>
+                  <span class="btn-sub-text">High-speed gigabit</span>
+                </button>
+                <button type="button" class="select-btn" data-value="No">
+                  <span class="btn-primary-text">No</span>
+                  <span class="btn-sub-text">No internet plan</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- OnlineSecurity -->
+            <div class="field-item" data-field="OnlineSecurity">
+              <label class="field-label">OnlineSecurity</label>
+              <div class="btn-group btn-group-yn" data-field="OnlineSecurity">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- OnlineBackup -->
+            <div class="field-item" data-field="OnlineBackup">
+              <label class="field-label">OnlineBackup</label>
+              <div class="btn-group btn-group-yn" data-field="OnlineBackup">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- DeviceProtection -->
+            <div class="field-item" data-field="DeviceProtection">
+              <label class="field-label">DeviceProtection</label>
+              <div class="btn-group btn-group-yn" data-field="DeviceProtection">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- TechSupport -->
+            <div class="field-item" data-field="TechSupport">
+              <label class="field-label">TechSupport</label>
+              <div class="btn-group btn-group-yn" data-field="TechSupport">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 04 — STREAMING & BILLING           -->
+        <!-- ========================================== -->
+        <div class="form-card" id="section-billing">
+          <div class="card-header">
+            <div class="section-indicator">04</div>
+            <div>
+              <h2 class="card-title">04 — Streaming & Billing</h2>
+              <p class="card-subtitle">Streaming and billing preferences.</p>
+            </div>
+          </div>
+
+          <div class="fields-grid">
+            <!-- StreamingTV -->
+            <div class="field-item" data-field="StreamingTV">
+              <label class="field-label">StreamingTV</label>
+              <div class="btn-group btn-group-yn" data-field="StreamingTV">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- StreamingMovies -->
+            <div class="field-item" data-field="StreamingMovies">
+              <label class="field-label">StreamingMovies</label>
+              <div class="btn-group btn-group-yn" data-field="StreamingMovies">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- PaperlessBilling -->
+            <div class="field-item" data-field="PaperlessBilling">
+              <label class="field-label">PaperlessBilling</label>
+              <div class="btn-group btn-group-yn" data-field="PaperlessBilling">
+                <button type="button" class="yn-btn" data-value="Yes">YES</button>
+                <button type="button" class="yn-btn" data-value="No">NO</button>
+              </div>
+            </div>
+
+            <!-- PaymentMethod (4 selectable cards) -->
+            <div class="field-item field-item-full" data-field="PaymentMethod">
+              <label class="field-label">PaymentMethod</label>
+              <div class="payment-cards-grid" data-field="PaymentMethod">
+                <button type="button" class="payment-card" data-value="Electronic check">
+                  <div class="payment-card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <path d="M7 15h0M2 10h20"></path>
+                    </svg>
+                  </div>
+                  <div class="payment-card-info">
+                    <span class="payment-name">Electronic check</span>
+                    <span class="payment-desc">Online instant clearing</span>
+                  </div>
+                </button>
+
+                <button type="button" class="payment-card" data-value="Mailed check">
+                  <div class="payment-card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                  </div>
+                  <div class="payment-card-info">
+                    <span class="payment-name">Mailed check</span>
+                    <span class="payment-desc">Traditional postal bill</span>
+                  </div>
+                </button>
+
+                <button type="button" class="payment-card" data-value="Bank transfer (automatic)">
+                  <div class="payment-card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="3" y1="21" x2="21" y2="21"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                      <polyline points="5 6 12 3 19 6"></polyline>
+                      <line x1="4" y1="10" x2="4" y2="21"></line>
+                      <line x1="20" y1="10" x2="20" y2="21"></line>
+                    </svg>
+                  </div>
+                  <div class="payment-card-info">
+                    <span class="payment-name">Bank transfer (automatic)</span>
+                    <span class="payment-desc">Direct debit ACH</span>
+                  </div>
+                </button>
+
+                <button type="button" class="payment-card" data-value="Credit card (automatic)">
+                  <div class="payment-card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                      <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                  </div>
+                  <div class="payment-card-info">
+                    <span class="payment-name">Credit card (automatic)</span>
+                    <span class="payment-desc">Recurring card charge</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- ACTION BAR / PREDICT BUTTON                -->
+        <!-- ========================================== -->
+        <div class="form-action-bar">
+          <div class="action-info">
+            <span class="info-dot"></span>
+            <span id="featuresReadyText">Select customer attributes above to generate prediction</span>
+          </div>
+
+          <button type="button" class="btn btn-predict" id="predictBtn">
+            <span class="btn-spinner" id="btnSpinner" aria-hidden="true"></span>
+            <span class="btn-text" id="btnText">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              PREDICT CHURN
+            </span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- RESULT SECTION                             -->
+    <!-- ========================================== -->
+    <section class="result-section" id="resultSection" style="display: none;">
+      <div class="result-card">
+        <div class="result-header">
+          <div class="result-tag-badge">AI INFERENCE OUTPUT</div>
+          <h2 class="result-title">CUSTOMER CHURN RESULT</h2>
+          <p class="result-subtitle">Evaluated against the trained machine learning pipeline</p>
+        </div>
+
+        <div class="result-body-grid">
+          <!-- Column 1: Prediction Verdict -->
+          <div class="result-col verdict-col">
+            <div class="col-caption">PREDICTED OUTCOME</div>
+            <div class="verdict-badge" id="verdictBadge">
+              <span class="verdict-word" id="verdictWord">YES</span>
+            </div>
+            <div class="verdict-label" id="verdictLabel">Customer likely to churn</div>
+            <p class="verdict-message" id="verdictMessage">
+              Customer has a higher predicted likelihood of churn.
+            </p>
+          </div>
+
+          <!-- Column 2: Circular Probability Indicator -->
+          <div class="result-col gauge-col">
+            <div class="col-caption">CHURN PROBABILITY</div>
+            <div class="gauge-wrapper">
+              <svg class="circular-gauge" viewBox="0 0 160 160">
+                <!-- Track ring -->
+                <circle class="gauge-track" cx="80" cy="80" r="68"></circle>
+                <!-- Animated fill ring -->
+                <circle class="gauge-progress" id="gaugeProgressRing" cx="80" cy="80" r="68"></circle>
+              </svg>
+              <div class="gauge-center-content">
+                <span class="gauge-percentage" id="churnPercentageDisplay">0.00%</span>
+                <span class="gauge-sublabel">CHURN RISK</span>
+              </div>
+            </div>
+            <div class="gauge-footer-note">Calculated from XGBoost class probabilities</div>
+          </div>
+
+          <!-- Column 3: Risk Level & Summary -->
+          <div class="result-col risk-col">
+            <div class="col-caption">ASSESSED RISK LEVEL</div>
+            <div class="risk-level-badge" id="riskLevelBadge">
+              <span class="risk-pulse-dot" id="riskPulseDot"></span>
+              <span class="risk-level-text" id="riskLevelText">HIGH</span>
+            </div>
+            <div class="risk-threshold-scale">
+              <div class="scale-bar">
+                <div class="scale-segment low">Low &lt;40%</div>
+                <div class="scale-segment medium">Med 40-70%</div>
+                <div class="scale-segment high">High &ge;70%</div>
+              </div>
+            </div>
+
+            <!-- Profile Highlights Snapshot -->
+            <div class="profile-snapshot">
+              <div class="snapshot-row">
+                <span class="snapshot-key">Contract</span>
+                <span class="snapshot-val" id="snapContract">Month-to-month</span>
+              </div>
+              <div class="snapshot-row">
+                <span class="snapshot-key">Tenure</span>
+                <span class="snapshot-val" id="snapTenure">12 months</span>
+              </div>
+              <div class="snapshot-row">
+                <span class="snapshot-key">Monthly Spend</span>
+                <span class="snapshot-val" id="snapSpend">$65.50</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Action Bar -->
+        <div class="result-footer-actions">
+          <button type="button" class="btn btn-outline" id="resetBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+            Predict Another Customer
+          </button>
+          <a href="#formSection" class="btn btn-ghost" id="editInputsBtn">
+            Adjust Customer Signals ↑
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ERROR NOTIFICATION CARD -->
+    <div class="error-card" id="errorCard" style="display: none;">
+      <div class="error-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <div class="error-body">
+        <h3 class="error-title" id="errorTitle">Action Required</h3>
+        <p class="error-desc" id="errorDescription">
+          Please make sure the FastAPI backend is running at <code>http://127.0.0.1:8000</code>.
+        </p>
+        <div class="error-terminal-tip" id="errorTerminalTip">
+          Terminal command: <code>uvicorn app:app --reload</code>
+        </div>
+      </div>
+      <button type="button" class="error-dismiss-btn" id="dismissErrorBtn" aria-label="Dismiss error">&times;</button>
+    </div>
+  </main>
+
+  <!-- Modern Tech Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-brand">Telco Customer Retention Intelligence</span>
+        <span class="footer-meta">Scored via Scikit-Learn Pipeline &amp; XGBoost Classifier</span>
+      </div>
+      <div class="footer-right">
+        <span class="api-target-badge">ENDPOINT: POST /predict</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>
